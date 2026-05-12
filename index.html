@@ -203,20 +203,50 @@
             .watermark-bg { width: 70vw; }
         }
 
+        /* --- Print & PDF Export Styling --- */
         @media print {
-            body, .main-container { height: auto; overflow: visible; display: block; background-color: transparent !important; }
-            .sidebar, .header, .action-btns, .dashboard-grid, .hero { display: none !important; }
-            .content-area { padding: 0; cursor: auto; background-color: transparent !important; }
-            .content-wrapper { margin: 0; padding: 0; box-shadow: none; border: none; max-width: 100%; background: transparent !important; }
-            .note-section { pointer-events: auto; }
-            .watermark-bg { display: block; opacity: 0.08; width: 60vw; max-width: 600px; }
-            h1 { page-break-before: always; color: #000; }
-            h1:first-of-type { page-break-before: auto; }
-            h3 { color: #000; border-bottom: 1px solid #ccc; }
-            img { page-break-inside: avoid; border: none; }
-            p, h3 { page-break-inside: avoid; }
-            .shortcut-box { border: 1px solid #000; background: transparent; color: #000; }
-            kbd { border: 1px solid #000; box-shadow: none; }
+            /* 1. Force all scrollable containers to expand fully (Fixes the 1-page cutoff issue) */
+            html, body, .main-container, .content-area, .content-wrapper { 
+                height: auto !important; 
+                overflow: visible !important; 
+                position: static !important;
+                display: block !important; 
+                background-color: transparent !important; 
+            }
+            
+            /* 2. Hide all web UI buttons and menus */
+            .sidebar, .header, .action-btns, .dashboard-grid, .hero, .toggle-btn { 
+                display: none !important; 
+            }
+            
+            /* 3. Remove web padding and shadows to fit paper sizes */
+            .content-area { padding: 0 !important; margin: 0 !important; border: none !important; }
+            .content-wrapper { margin: 0 !important; padding: 0 !important; box-shadow: none !important; border: none !important; max-width: 100% !important; }
+            .note-section { pointer-events: auto !important; }
+            
+            /* 4. Force Watermark to stamp on EVERY printed page */
+            .watermark-bg { 
+                display: block !important; 
+                position: fixed !important; 
+                top: 50% !important; 
+                left: 50% !important; 
+                transform: translate(-50%, -50%) !important;
+                opacity: 0.08 !important; 
+                width: 60vw !important; 
+                max-width: 600px !important; 
+                z-index: -1 !important;
+            }
+
+            /* 5. Smart Page Breaks (Prevents images or text boxes splitting in half) */
+            h1 { page-break-before: always; color: #000; padding-top: 20px; }
+            h1:first-of-type { page-break-before: avoid; padding-top: 0; } 
+            h3 { color: #000; border-bottom: 1px solid #ccc; page-break-after: avoid; }
+            img { page-break-inside: avoid; border: none; max-width: 100% !important; margin: 15px 0 !important; }
+            p, ul, li, .shortcut-box { page-break-inside: avoid; }
+            
+            /* 6. High-Contrast mode for the Keyboard Shortcuts */
+            .shortcut-box { border: 1px solid #000 !important; background: transparent !important; color: #000 !important; }
+            kbd { border: 1px solid #000 !important; box-shadow: none !important; background: transparent !important; }
         }
     </style>
 </head>
