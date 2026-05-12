@@ -177,13 +177,31 @@
         .module-card h3 { margin: 0 0 10px 0; color: var(--text-main); font-size: 1.2rem; }
         .module-card span { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
 
-        /* --- Utilities --- */
+       /* --- Utilities --- */
         #lightbox {
             display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%;
             background-color: rgba(15, 23, 42, 0.9); backdrop-filter: blur(5px);
-            justify-content: center; align-items: center; cursor: zoom-out;
+            overflow: auto; /* Allows scrolling when the image is zoomed */
+            text-align: center; /* Centers the image */
+            padding: 50px 20px;
         }
-        #lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        
+        #lightbox img { 
+            display: inline-block; vertical-align: middle;
+            max-width: 90%; max-height: 85vh; border-radius: 8px; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+            cursor: zoom-in; transition: all 0.3s ease;
+            transform-origin: top center;
+        }
+        
+        /* The state when the student clicks to zoom */
+        #lightbox img.zoomed {
+            max-width: none; 
+            max-height: none; 
+            width: 200%; /* Makes the image 2x larger */
+            cursor: zoom-out; 
+            margin-bottom: 50px;
+        }
 
         .watermark-bg {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -279,8 +297,8 @@
         <div class="content-area" id="content-display"></div>
     </div>
 
-    <div id="lightbox" onclick="this.style.display='none'">
-        <img id="lightbox-img" src="" alt="Enlarged view">
+    <div id="lightbox" onclick="closeLightbox(event)">
+        <img id="lightbox-img" src="" alt="Enlarged view" onclick="toggleZoom(event)">
     </div>
 
     <!-- Data File -->
@@ -319,6 +337,9 @@
                 <div class="hero">
                     <h1>The Ultimate Excel Masterclass</h1>
                     <p>From absolute beginner to data professional.</p>
+                    
+                    <!-- Application Preview Image -->
+                    <img src="images/excel-preview.jpg" alt="Excel Application Preview" style="width: 100%; max-width: 800px; border-radius: 8px; margin: 20px auto 40px auto; box-shadow: var(--shadow-lg); border: 1px solid var(--border); display: block;">
                 </div>
                 <div class="dashboard-grid">`;
             
@@ -378,11 +399,28 @@
             }
         }
 
+        // --- 1. NEW ZOOMABLE LIGHTBOX LOGIC ---
         function openLightbox(src) {
-            document.getElementById('lightbox-img').src = src;
-            document.getElementById('lightbox').style.display = 'flex';
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            img.classList.remove('zoomed'); // Always start zoomed out
+            document.getElementById('lightbox').style.display = 'block'; // Changed to block to allow scrolling
         }
 
+        function closeLightbox(e) {
+            // Only close if the student clicks the dark background
+            if (e.target.id === 'lightbox') {
+                document.getElementById('lightbox').style.display = 'none';
+            }
+        }
+
+        function toggleZoom(e) {
+            e.stopPropagation(); // Prevents the image click from closing the window
+            const img = e.target;
+            img.classList.toggle('zoomed');
+        }
+
+        // --- 2. DRAG TO SCROLL LOGIC (Remains exactly the same!) ---
         let isDown = false, startY, scrollTop;
 
         contentDisplay.addEventListener('mousedown', (e) => {
