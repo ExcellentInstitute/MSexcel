@@ -321,11 +321,34 @@
                 btn.onclick = () => loadContent(index, btn);
                 navContainer.appendChild(btn);
             });
-            loadDashboard(); 
+            loadEntryScreen(); 
         }
 
         function toggleSidebar() {
             sidebar.classList.toggle('collapsed');
+        }
+
+        function loadEntryScreen() {
+            // Remove active highlights from the sidebar
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+            let html = `
+            <div class="content-wrapper allow-select" style="text-align: center; margin-top: 5vh;">
+                <h1 style="font-size: 2.8rem; color: var(--primary); margin-bottom: 10px;">MS Excel Masterclass</h1>
+                <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px;">Preview of the application interface.</p>
+                
+                <!-- Your Application Preview Image -->
+                <img src="images/excel-preview.jpg" alt="App Preview" style="width: 100%; max-width: 800px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 2px solid var(--border); margin-bottom: 40px; cursor: zoom-in;" onclick="openLightbox(this.src)">
+                <br>
+                
+                <!-- The Enter Button -->
+                <button onclick="loadDashboard()" style="background-color: var(--primary); color: white; border: none; padding: 15px 40px; font-size: 1.2rem; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: var(--shadow-md);">
+                    Enter Application 🚀
+                </button>
+            </div>`;
+            
+            document.getElementById('content-display').innerHTML = html;
+            document.getElementById('content-display').scrollTop = 0;
         }
 
         function loadDashboard() {
