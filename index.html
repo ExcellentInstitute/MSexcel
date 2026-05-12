@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excellent Institute - Complete MS Excel Guide</title>
+    <title>Excellent Institute - Ultimate MS Excel Masterclass</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -42,6 +42,7 @@
         ::-webkit-scrollbar-thumb { background: #bbf7d0; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #86efac; }
 
+        /* --- Header --- */
         .header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 12px 24px; background-color: rgba(255, 255, 255, 0.85);
@@ -73,10 +74,11 @@
         }
         .action-btns button:hover { background-color: var(--background); border-color: var(--text-muted); transform: translateY(-1px); }
 
+        /* --- Sidebar & Layout --- */
         .main-container { display: flex; flex: 1; overflow: hidden; }
 
         .sidebar {
-            width: 280px; background-color: var(--surface); border-right: 1px solid var(--border);
+            width: 300px; background-color: var(--surface); border-right: 1px solid var(--border);
             padding: 24px 16px; overflow-y: auto; overflow-x: hidden; flex-shrink: 0;
             display: flex; flex-direction: column; gap: 6px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1;
@@ -98,6 +100,7 @@
         .nav-btn:hover { background-color: var(--background); color: var(--text-main); }
         .nav-btn.active { background-color: var(--primary-light); color: var(--primary); }
 
+        /* --- Content Area --- */
         .content-area {
             flex: 1; padding: 40px 60px; overflow-y: auto; background-color: transparent; 
             cursor: grab; scroll-behavior: smooth;
@@ -115,9 +118,37 @@
         .note-section { pointer-events: none; }
         .note-section.allow-select { pointer-events: auto; }
 
+        /* --- Typography & Elements --- */
         .note-section h1 { color: var(--text-main); font-size: 2.2rem; font-weight: 800; margin: 0 0 30px 0; border-bottom: 2px solid var(--border); padding-bottom: 15px;}
         .note-section h3 { color: var(--primary); font-size: 1.4rem; margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
         .note-section p, .note-section li { line-height: 1.7; font-size: 1.1rem; color: #334155; }
+
+        /* KEYBOARD SHORTCUT STYLING */
+        .shortcut-box {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--accent);
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+            color: var(--primary);
+        }
+        
+        kbd {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-bottom: 3px solid #94a3b8;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.9em;
+            font-family: 'Courier New', Courier, monospace;
+            color: #1e293b;
+            font-weight: 700;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
 
         .note-section img {
             max-width: 100%; height: auto; border: 1px solid var(--border);
@@ -127,11 +158,12 @@
         .note-section img:hover { transform: scale(1.01); box-shadow: var(--shadow-md); }
         .img-caption { font-size: 0.9rem; color: var(--text-muted); text-align: center; margin-bottom: 30px; }
 
+        /* --- Dashboard Grid --- */
         .hero { text-align: center; margin-bottom: 40px; }
         .hero h1 { font-size: 2.5rem; color: var(--text-main); margin-bottom: 10px; }
         .hero p { color: var(--text-muted); font-size: 1.1rem; }
         
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; pointer-events: auto; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; pointer-events: auto; }
         .module-card {
             background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
             padding: 24px; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow-sm);
@@ -145,6 +177,7 @@
         .module-card h3 { margin: 0 0 10px 0; color: var(--text-main); font-size: 1.2rem; }
         .module-card span { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
 
+        /* --- Utilities --- */
         #lightbox {
             display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%;
             background-color: rgba(15, 23, 42, 0.9); backdrop-filter: blur(5px);
@@ -158,6 +191,7 @@
             z-index: 9999; border-radius: 50%; object-fit: cover;
         }
 
+        /* --- Responsive & Print --- */
         @media (max-width: 768px) {
             .main-container { flex-direction: column; }
             .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; overflow-x: auto; padding: 12px; gap: 10px;}
@@ -181,6 +215,8 @@
             h3 { color: #000; border-bottom: 1px solid #ccc; }
             img { page-break-inside: avoid; border: none; }
             p, h3 { page-break-inside: avoid; }
+            .shortcut-box { border: 1px solid #000; background: transparent; color: #000; }
+            kbd { border: 1px solid #000; box-shadow: none; }
         }
     </style>
 </head>
@@ -193,7 +229,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
-            <!-- REPLACE THIS URL WITH YOUR GITHUB LOGO LINK -->
             <img src="YOUR_GITHUB_LOGO_URL.png" alt="Excellent Institute Logo" class="logo" id="mainLogo" onclick="loadDashboard()">
             <h2 onclick="loadDashboard()">Excellent Institute</h2>
         </div>
@@ -202,29 +237,23 @@
         </div>
     </div>
 
-    <!-- REPLACE THIS URL WITH YOUR GITHUB LOGO LINK -->
     <img src="YOUR_GITHUB_LOGO_URL.png" alt="Watermark" class="watermark-bg" id="watermarkLogo">
 
     <div class="main-container">
-        
         <div class="sidebar" id="main-sidebar">
-            <div class="nav-label">Table of Contents</div>
-            <button class="nav-btn active" onclick="loadDashboard()" id="home-btn">🏠 Book Cover</button>
-            <div id="nav-container" style="display: flex; flex-direction: column; gap: 6px;">
-                <!-- JavaScript will inject chapter buttons here -->
-            </div>
+            <div class="nav-label">Course Chapters</div>
+            <button class="nav-btn active" onclick="loadDashboard()" id="home-btn">🏠 Dashboard</button>
+            <div id="nav-container" style="display: flex; flex-direction: column; gap: 6px;"></div>
         </div>
 
-        <div class="content-area" id="content-display">
-            <!-- JavaScript will inject theory and images here -->
-        </div>
+        <div class="content-area" id="content-display"></div>
     </div>
 
     <div id="lightbox" onclick="this.style.display='none'">
         <img id="lightbox-img" src="" alt="Enlarged view">
     </div>
 
-    <!-- CHANGED: Now connects to excel-data.js -->
+    <!-- Data File -->
     <script src="excel-data.js"></script>
     
     <script>
@@ -233,11 +262,14 @@
         const sidebar = document.getElementById('main-sidebar');
 
         function initApp() {
-            // CHANGED: Now uses excelBookData
+            if (typeof excelBookData === 'undefined') {
+                contentDisplay.innerHTML = `<h2 style="color:red; text-align:center; padding:50px;">Awaiting Data File...</h2>`;
+                return;
+            }
             excelBookData.forEach((chapter, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'nav-btn note-nav-btn';
-                btn.innerHTML = `📗 ${chapter.title.split(':')[0]}`; // Using a green book icon
+                btn.innerHTML = `📗 ${chapter.title.split(':')[0]}`; 
                 btn.onclick = () => loadContent(index, btn);
                 navContainer.appendChild(btn);
             });
@@ -255,22 +287,23 @@
             let html = `
             <div class="content-wrapper allow-select">
                 <div class="hero">
-                    <h1>MS Excel Complete Guide</h1>
-                    <p>Select a chapter below to start learning the magic of spreadsheets.</p>
+                    <h1>The Ultimate Excel Masterclass</h1>
+                    <p>From absolute beginner to data professional.</p>
                 </div>
                 <div class="dashboard-grid">`;
             
-            // CHANGED: Now uses excelBookData and green icons
-            const icons = ['📊', '📈', '📉', '🧮', '🟩'];
-            excelBookData.forEach((chapter, index) => {
-                let icon = icons[index % icons.length];
-                html += `
-                    <div class="module-card" onclick="document.querySelectorAll('.note-nav-btn')[${index}].click()">
-                        <div class="card-icon">${icon}</div>
-                        <h3>${chapter.title}</h3>
-                        <span>${chapter.topics.length} Topics inside</span>
-                    </div>`;
-            });
+            const icons = ['📊', '📈', '📉', '🧮', '🟩', '⚙️', '🔍'];
+            if (typeof excelBookData !== 'undefined') {
+                excelBookData.forEach((chapter, index) => {
+                    let icon = icons[index % icons.length];
+                    html += `
+                        <div class="module-card" onclick="document.querySelectorAll('.note-nav-btn')[${index}].click()">
+                            <div class="card-icon">${icon}</div>
+                            <h3>${chapter.title}</h3>
+                            <span>${chapter.topics.length} Expert Topics</span>
+                        </div>`;
+                });
+            }
 
             html += `</div></div>`;
             contentDisplay.innerHTML = html;
@@ -281,7 +314,6 @@
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             if(clickedBtn) clickedBtn.classList.add('active');
 
-            // CHANGED: Now uses excelBookData
             const chapter = excelBookData[index];
 
             let htmlContent = `
@@ -293,6 +325,14 @@
                 htmlContent += `<h3>${topic.heading}</h3>`;
                 htmlContent += `<p>${topic.text}</p>`;
                 
+                // NEW: Logic to render the shortcut beautifully if it exists in the data
+                if(topic.shortcut) {
+                    htmlContent += `
+                    <div class="shortcut-box">
+                        <strong>⌨️ Shortcut:</strong> <kbd>${topic.shortcut}</kbd>
+                    </div>`;
+                }
+
                 if(topic.imgSrc) {
                     htmlContent += `<img src="${topic.imgSrc}" alt="${topic.heading}" onclick="openLightbox(this.src)">`;
                     htmlContent += `<div class="img-caption">Figure: ${topic.heading}</div>`;
@@ -313,9 +353,7 @@
             document.getElementById('lightbox').style.display = 'flex';
         }
 
-        let isDown = false;
-        let startY;
-        let scrollTop;
+        let isDown = false, startY, scrollTop;
 
         contentDisplay.addEventListener('mousedown', (e) => {
             if(e.target.closest('.module-card') || e.target.tagName === 'IMG') return;
