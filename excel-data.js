@@ -344,4 +344,46 @@ const excelBookData = [
             }
         ]
     }
+    ,{
+        id: "chapter15",
+        title: "Chapter 15: The Secret Pro Tools",
+        topics: [
+            {
+                heading: "Locking a Box (The Dollar Sign $)",
+                text: "Sometimes when you drag the green Autofill dot, your math formula breaks because the boxes move down! To 'lock' a box in place so it never moves, put Dollar signs in front of the letter and number (like $A$1). Now it is glued in place forever!",
+                shortcut: "F4 (Press this while typing a formula to add the $ signs instantly)",
+                imgSrc: "images/ex-44-dollarsign.jpg"
+            },
+            {
+                heading: "The Format Painter (Magic Brush)",
+                text: "If you painted a box yellow, made the text bold, and drew a thick border, you don't have to repeat those steps for the next box. Click the finished box, click the 'Format Painter' brush icon, and wipe it over the new box to copy the design instantly!",
+                shortcut: "Alt + H, F, P (Selects the Format Painter)",
+                imgSrc: "images/ex-45-formatpainter.jpg"
+            },
+            {
+                heading: "Wrapping Text (Fitting Big Sentences)",
+                text: "If you type a really long sentence in a box, it spills over and hides behind the next box. Instead of making the column super wide, click the box and hit 'Wrap Text' in the Home tab. It makes the box taller and stacks the words neatly inside!",
+                shortcut: "Alt + H, W (Wraps the text instantly)",
+                imgSrc: "images/ex-46-wraptext.jpg"
+            }
+        ]
+    },
+    {
+        id: "chapter16",
+        title: "Chapter 16: Speedy Navigation",
+        topics: [
+            {
+                heading: "Teleporting Around Huge Lists",
+                text: "If your list has 5,000 students, do not use the mouse scroll wheel—it will take forever! Hold the 'Ctrl' key and press the 'Down Arrow' to instantly teleport to the very bottom of the list. Press 'Up Arrow' to teleport back to the top.",
+                shortcut: "Ctrl + Arrow Keys (Teleport to the edges of your data)",
+                imgSrc: "images/ex-47-teleport.jpg"
+            },
+            {
+                heading: "Selecting Whole Rows or Columns",
+                text: "To select an entire row to delete it or paint it, you don't need to carefully drag your mouse all the way across the screen. Just click any box and use these quick keyboard buttons to highlight the entire line in one blink of an eye.",
+                shortcut: "Shift + Space (Select Row) | Ctrl + Space (Select Column)",
+                imgSrc: "images/ex-48-selectall.jpg"
+            }
+        ]
+    }
 ];
