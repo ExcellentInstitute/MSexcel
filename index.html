@@ -311,6 +311,85 @@
         const contentDisplay = document.getElementById('content-display');
         const sidebar = document.getElementById('main-sidebar');
 
+        // --- NEW: Global Lock Variable ---
+        let isAdvancedUnlocked = false; 
+
+        function loadContent(index, clickedBtn) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if(clickedBtn) clickedBtn.classList.add('active');
+
+            // --- NEW: Lock screen for Chapter 10 (index 9) onwards ---
+            if (index >= 9 && !isAdvancedUnlocked) {
+                let lockHtml = `
+                <div class="content-wrapper allow-select" style="text-align: center; padding: 80px 20px;">
+                    <div style="font-size: 5rem; margin-bottom: 10px;">🔒</div>
+                    <h2 style="color: var(--primary); font-size: 2rem;">Advanced Chapters Locked</h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 25px;">Please enter the password to access Chapter 10 and beyond.</p>
+                    
+                    <input type="password" id="unlockPass" placeholder="Password" style="padding: 12px; font-size: 1.2rem; border: 2px solid var(--border); border-radius: 8px; width: 100%; max-width: 250px; text-align: center; outline: none;">
+                    <br><br>
+                    
+                    <button onclick="checkPassword(${index})" style="background-color: var(--primary); color: white; border: none; padding: 12px 40px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: var(--shadow-md);">
+                        Unlock 🔓
+                    </button>
+                    
+                    <p id="wrong-pass-msg" style="color: #ef4444; font-weight: bold; margin-top: 15px; display: none;">❌ Incorrect Password!</p>
+                </div>`;
+                
+                contentDisplay.innerHTML = lockHtml;
+                contentDisplay.scrollTop = 0;
+                
+                if(window.innerWidth <= 768) sidebar.classList.add('collapsed'); // Closes sidebar on mobile
+                return; // Stops here so the secret content doesn't load!
+            }
+
+            // --- Normal Content Loading (Remains exactly the same) ---
+            const chapter = excelBookData[index];
+
+            let htmlContent = `
+            <div class="content-wrapper">
+                <div class="note-section allow-select">
+                    <h1>${chapter.title}</h1>`;
+            
+            chapter.topics.forEach(topic => {
+                htmlContent += `<h3>${topic.heading}</h3>`;
+                htmlContent += `<p>${topic.text}</p>`;
+                
+                if(topic.shortcut) {
+                    htmlContent += `
+                    <div class="shortcut-box">
+                        <strong>⌨️ Shortcut:</strong> <kbd>${topic.shortcut}</kbd>
+                    </div>`;
+                }
+
+                if(topic.imgSrc) {
+                    htmlContent += `<img src="${topic.imgSrc}" alt="${topic.heading}" onclick="openLightbox(this.src)">`;
+                    htmlContent += `<div class="img-caption">Figure: ${topic.heading}</div>`;
+                }
+            });
+            htmlContent += `</div></div>`;
+            
+            contentDisplay.innerHTML = htmlContent;
+            contentDisplay.scrollTop = 0;
+            
+            if(window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed');
+            }
+        }
+
+        // --- NEW: Password Verification Function ---
+        function checkPassword(index) {
+            const input = document.getElementById('unlockPass').value;
+            // Checks if the password is exactly PGDCA
+            if (input === "PGDCA") {
+                isAdvancedUnlocked = true; // Unlocks the whole advanced section!
+                const btn = document.querySelectorAll('.note-nav-btn')[index];
+                loadContent(index, btn); // Instantly reload the chapter they wanted
+            } else {
+                document.getElementById('wrong-pass-msg').style.display = 'block'; // Show error message
+            }
+        }
+
         function initApp() {
             if (typeof excelBookData === 'undefined') {
                 contentDisplay.innerHTML = `<h2 style="color:red; text-align:center; padding:50px;">Awaiting Data File...</h2>`;
