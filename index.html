@@ -383,6 +383,14 @@
             // Checks if the password is exactly PGDCA
             if (input === "PGDCA") {
                 isAdvancedUnlocked = true; // Unlocks the whole advanced section!
+                
+                // NEW: Instantly turn all 🔒 into 📗 in the sidebar
+                document.querySelectorAll('.note-nav-btn').forEach((btn, i) => {
+                    if (i >= 9) {
+                        btn.innerHTML = btn.innerHTML.replace('🔒', '📗');
+                    }
+                });
+                
                 const btn = document.querySelectorAll('.note-nav-btn')[index];
                 loadContent(index, btn); // Instantly reload the chapter they wanted
             } else {
@@ -398,7 +406,11 @@
             excelBookData.forEach((chapter, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'nav-btn note-nav-btn';
-                btn.innerHTML = `📗 ${chapter.title.split(':')[0]}`; 
+                
+                // NEW: Shows a Lock icon for Chapter 10 and above
+                let displayIcon = (index >= 9 && !isAdvancedUnlocked) ? '🔒' : '📗';
+                btn.innerHTML = `${displayIcon} ${chapter.title.split(':')[0]}`; 
+                
                 btn.onclick = () => loadContent(index, btn);
                 navContainer.appendChild(btn);
             });
@@ -450,11 +462,15 @@
             const icons = ['📊', '📈', '📉', '🧮', '🟩', '⚙️', '🔍'];
             if (typeof excelBookData !== 'undefined') {
                 excelBookData.forEach((chapter, index) => {
-                    let icon = icons[index % icons.length];
+                    // NEW: Logic to visually lock the cards
+                    let isLocked = (index >= 9 && !isAdvancedUnlocked);
+                    let icon = isLocked ? '🔒' : icons[index % icons.length];
+                    let lockedText = isLocked ? '<span style="color:#ef4444; font-size:0.9rem;"> (Locked)</span>' : '';
+                    
                     html += `
                         <div class="module-card" onclick="document.querySelectorAll('.note-nav-btn')[${index}].click()">
                             <div class="card-icon">${icon}</div>
-                            <h3>${chapter.title}</h3>
+                            <h3>${chapter.title}${lockedText}</h3>
                             <span>${chapter.topics.length} Expert Topics</span>
                         </div>`;
                 });
