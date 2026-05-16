@@ -60,9 +60,7 @@
         .toggle-btn:hover { background-color: var(--primary-light); }
 
         .brand img.logo {
-            width: 50px; /* Reduced from 45px */
-            height: 50px; /* Reduced from 45px */
-            border-radius: 50%; object-fit: cover;
+            width: 35px; height: 35px; border-radius: 50%; object-fit: cover;
             border: 2px solid var(--accent); box-shadow: var(--shadow-sm); cursor: pointer;
         }
 
@@ -179,30 +177,20 @@
         .module-card h3 { margin: 0 0 10px 0; color: var(--text-main); font-size: 1.2rem; }
         .module-card span { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
 
-       /* --- Utilities --- */
+        /* --- Zoomable Lightbox Modal --- */
         #lightbox {
             display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%;
             background-color: rgba(15, 23, 42, 0.9); backdrop-filter: blur(5px);
-            overflow: auto; /* Allows scrolling when the image is zoomed */
-            text-align: center; /* Centers the image */
-            padding: 50px 20px;
+            overflow: auto; text-align: center; padding: 50px 20px;
         }
-        
         #lightbox img { 
             display: inline-block; vertical-align: middle;
             max-width: 90%; max-height: 85vh; border-radius: 8px; 
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
-            cursor: zoom-in; transition: all 0.3s ease;
-            transform-origin: top center;
+            cursor: zoom-in; transition: all 0.3s ease; transform-origin: top center;
         }
-        
-        /* The state when the student clicks to zoom */
         #lightbox img.zoomed {
-            max-width: none; 
-            max-height: none; 
-            width: 140%; /* Makes the image 2x larger */
-            cursor: zoom-out; 
-            margin-bottom: 50px;
+            max-width: none; max-height: none; width: 140%; cursor: zoom-out; margin-bottom: 50px;
         }
 
         .watermark-bg {
@@ -223,48 +211,25 @@
             .watermark-bg { width: 70vw; }
         }
 
-        /* --- Print & PDF Export Styling --- */
         @media print {
-            /* 1. Force all scrollable containers to expand fully (Fixes the 1-page cutoff issue) */
             html, body, .main-container, .content-area, .content-wrapper { 
-                height: auto !important; 
-                overflow: visible !important; 
-                position: static !important;
-                display: block !important; 
-                background-color: transparent !important; 
+                height: auto !important; overflow: visible !important; position: static !important;
+                display: block !important; background-color: transparent !important; 
             }
-            
-            /* 2. Hide all web UI buttons and menus */
-            .sidebar, .header, .action-btns, .dashboard-grid, .hero, .toggle-btn { 
-                display: none !important; 
-            }
-            
-            /* 3. Remove web padding and shadows to fit paper sizes */
+            .sidebar, .header, .action-btns, .dashboard-grid, .hero, .toggle-btn { display: none !important; }
             .content-area { padding: 0 !important; margin: 0 !important; border: none !important; }
             .content-wrapper { margin: 0 !important; padding: 0 !important; box-shadow: none !important; border: none !important; max-width: 100% !important; }
             .note-section { pointer-events: auto !important; }
-            
-            /* 4. Force Watermark to stamp on EVERY printed page */
             .watermark-bg { 
-                display: block !important; 
-                position: fixed !important; 
-                top: 50% !important; 
-                left: 50% !important; 
-                transform: translate(-50%, -50%) !important;
-                opacity: 0.08 !important; 
-                width: 60vw !important; 
-                max-width: 600px !important; 
-                z-index: -1 !important;
+                display: block !important; position: fixed !important; top: 50% !important; left: 50% !important; 
+                transform: translate(-50%, -50%) !important; opacity: 0.08 !important; width: 60vw !important; 
+                max-width: 600px !important; z-index: -1 !important;
             }
-
-            /* 5. Smart Page Breaks (Prevents images or text boxes splitting in half) */
             h1 { page-break-before: always; color: #000; padding-top: 20px; }
             h1:first-of-type { page-break-before: avoid; padding-top: 0; } 
             h3 { color: #000; border-bottom: 1px solid #ccc; page-break-after: avoid; }
             img { page-break-inside: avoid; border: none; max-width: 100% !important; margin: 15px 0 !important; }
             p, ul, li, .shortcut-box { page-break-inside: avoid; }
-            
-            /* 6. High-Contrast mode for the Keyboard Shortcuts */
             .shortcut-box { border: 1px solid #000 !important; background: transparent !important; color: #000 !important; }
             kbd { border: 1px solid #000 !important; box-shadow: none !important; background: transparent !important; }
         }
@@ -303,7 +268,6 @@
         <img id="lightbox-img" src="" alt="Enlarged view" onclick="toggleZoom(event)">
     </div>
 
-    <!-- Data File -->
     <script src="excel-data.js"></script>
     
     <script>
@@ -311,92 +275,8 @@
         const contentDisplay = document.getElementById('content-display');
         const sidebar = document.getElementById('main-sidebar');
 
-        // --- NEW: Global Lock Variable ---
+        // Global Lock Variable
         let isAdvancedUnlocked = false; 
-
-        function loadContent(index, clickedBtn) {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            if(clickedBtn) clickedBtn.classList.add('active');
-
-            // --- NEW: Lock screen for Chapter 10 (index 9) onwards ---
-            if (index >= 9 && !isAdvancedUnlocked) {
-                let lockHtml = `
-                <div class="content-wrapper allow-select" style="text-align: center; padding: 80px 20px;">
-                    <div style="font-size: 5rem; margin-bottom: 10px;">🔒</div>
-                    <h2 style="color: var(--primary); font-size: 2rem;">Advanced Chapters Locked</h2>
-                    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 25px;">Please enter the password to access Chapter 10 and beyond.</p>
-                    
-                    <input type="password" id="unlockPass" placeholder="Password" style="padding: 12px; font-size: 1.2rem; border: 2px solid var(--border); border-radius: 8px; width: 100%; max-width: 250px; text-align: center; outline: none;">
-                    <br><br>
-                    
-                    <button onclick="checkPassword(${index})" style="background-color: var(--primary); color: white; border: none; padding: 12px 40px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: var(--shadow-md);">
-                        Unlock 🔓
-                    </button>
-                    
-                    <p id="wrong-pass-msg" style="color: #ef4444; font-weight: bold; margin-top: 15px; display: none;">❌ Incorrect Password!</p>
-                </div>`;
-                
-                contentDisplay.innerHTML = lockHtml;
-                contentDisplay.scrollTop = 0;
-                
-                if(window.innerWidth <= 768) sidebar.classList.add('collapsed'); // Closes sidebar on mobile
-                return; // Stops here so the secret content doesn't load!
-            }
-
-            // --- Normal Content Loading (Remains exactly the same) ---
-            const chapter = excelBookData[index];
-
-            let htmlContent = `
-            <div class="content-wrapper">
-                <div class="note-section allow-select">
-                    <h1>${chapter.title}</h1>`;
-            
-            chapter.topics.forEach(topic => {
-                htmlContent += `<h3>${topic.heading}</h3>`;
-                htmlContent += `<p>${topic.text}</p>`;
-                
-                if(topic.shortcut) {
-                    htmlContent += `
-                    <div class="shortcut-box">
-                        <strong>⌨️ Shortcut:</strong> <kbd>${topic.shortcut}</kbd>
-                    </div>`;
-                }
-
-                if(topic.imgSrc) {
-                    htmlContent += `<img src="${topic.imgSrc}" alt="${topic.heading}" onclick="openLightbox(this.src)">`;
-                    htmlContent += `<div class="img-caption">Figure: ${topic.heading}</div>`;
-                }
-            });
-            htmlContent += `</div></div>`;
-            
-            contentDisplay.innerHTML = htmlContent;
-            contentDisplay.scrollTop = 0;
-            
-            if(window.innerWidth <= 768) {
-                sidebar.classList.add('collapsed');
-            }
-        }
-
-        // --- NEW: Password Verification Function ---
-        function checkPassword(index) {
-            const input = document.getElementById('unlockPass').value;
-            // Checks if the password is exactly PGDCA
-            if (input === "PGDCA") {
-                isAdvancedUnlocked = true; // Unlocks the whole advanced section!
-                
-                // NEW: Instantly turn all 🔒 into 📗 in the sidebar
-                document.querySelectorAll('.note-nav-btn').forEach((btn, i) => {
-                    if (i >= 9) {
-                        btn.innerHTML = btn.innerHTML.replace('🔒', '📗');
-                    }
-                });
-                
-                const btn = document.querySelectorAll('.note-nav-btn')[index];
-                loadContent(index, btn); // Instantly reload the chapter they wanted
-            } else {
-                document.getElementById('wrong-pass-msg').style.display = 'block'; // Show error message
-            }
-        }
 
         function initApp() {
             if (typeof excelBookData === 'undefined') {
@@ -407,7 +287,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'nav-btn note-nav-btn';
                 
-                // NEW: Shows a Lock icon for Chapter 10 and above
+                // Show Lock icon for Chapter 10 and above
                 let displayIcon = (index >= 9 && !isAdvancedUnlocked) ? '🔒' : '📗';
                 btn.innerHTML = `${displayIcon} ${chapter.title.split(':')[0]}`; 
                 
@@ -422,7 +302,6 @@
         }
 
         function loadEntryScreen() {
-            // Remove active highlights from the sidebar
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
 
             let html = `
@@ -430,18 +309,16 @@
                 <h1 style="font-size: 2.8rem; color: var(--primary); margin-bottom: 10px;">MS Excel Masterclass</h1>
                 <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px;">Preview of the application interface.</p>
                 
-                <!-- Your Application Preview Image -->
-                <img src="images/excel-preview.jpg" alt="App Preview" style="width: 100%; max-width: 300px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 2px solid var(--border); margin-bottom: 40px; cursor: zoom-in;" onclick="openLightbox(this.src)">
+                <img src="images/excel-preview.jpg" alt="App Preview" style="width: 100%; max-width: 500px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 2px solid var(--border); margin-bottom: 40px; cursor: zoom-in;" onclick="openLightbox(this.src)">
                 <br>
                 
-                <!-- The Enter Button -->
                 <button onclick="loadDashboard()" style="background-color: var(--primary); color: white; border: none; padding: 15px 40px; font-size: 1.2rem; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: var(--shadow-md);">
                     Enter Application 🚀
                 </button>
             </div>`;
             
-            document.getElementById('content-display').innerHTML = html;
-            document.getElementById('content-display').scrollTop = 0;
+            contentDisplay.innerHTML = html;
+            contentDisplay.scrollTop = 0;
         }
 
         function loadDashboard() {
@@ -453,16 +330,13 @@
                 <div class="hero">
                     <h1>The Ultimate Excel Masterclass</h1>
                     <p>From absolute beginner to data professional.</p>
-                    
-                    <!-- Application Preview Image -->
-                    <img src="images/excel-preview.jpg" alt="Excel Application Preview" style="width: 100%; max-width: 800px; border-radius: 8px; margin: 20px auto 40px auto; box-shadow: var(--shadow-lg); border: 1px solid var(--border); display: block;">
                 </div>
                 <div class="dashboard-grid">`;
             
             const icons = ['📊', '📈', '📉', '🧮', '🟩', '⚙️', '🔍'];
             if (typeof excelBookData !== 'undefined') {
                 excelBookData.forEach((chapter, index) => {
-                    // NEW: Logic to visually lock the cards
+                    // Logic to visually lock the cards
                     let isLocked = (index >= 9 && !isAdvancedUnlocked);
                     let icon = isLocked ? '🔒' : icons[index % icons.length];
                     let lockedText = isLocked ? '<span style="color:#ef4444; font-size:0.9rem;"> (Locked)</span>' : '';
@@ -485,6 +359,32 @@
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             if(clickedBtn) clickedBtn.classList.add('active');
 
+            // --- FUNCTIONAL LOCK GUARD (This protects BOTH Sidebar and Dashboard clicks) ---
+            if (index >= 9 && !isAdvancedUnlocked) {
+                let lockHtml = `
+                <div class="content-wrapper allow-select" style="text-align: center; padding: 80px 20px;">
+                    <div style="font-size: 5rem; margin-bottom: 10px;">🔒</div>
+                    <h2 style="color: var(--primary); font-size: 2rem;">Advanced Chapters Locked</h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 25px;">Please enter the password to access Chapter 10 and beyond.</p>
+                    
+                    <input type="password" id="unlockPass" placeholder="Password" style="padding: 12px; font-size: 1.2rem; border: 2px solid var(--border); border-radius: 8px; width: 100%; max-width: 250px; text-align: center; outline: none;">
+                    <br><br>
+                    
+                    <button onclick="checkPassword(${index})" style="background-color: var(--primary); color: white; border: none; padding: 12px 40px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: var(--shadow-md);">
+                        Unlock 🔓
+                    </button>
+                    
+                    <p id="wrong-pass-msg" style="color: #ef4444; font-weight: bold; margin-top: 15px; display: none;">❌ Incorrect Password!</p>
+                </div>`;
+                
+                contentDisplay.innerHTML = lockHtml;
+                contentDisplay.scrollTop = 0;
+                
+                if(window.innerWidth <= 768) sidebar.classList.add('collapsed');
+                return; // 🛑 Stops here if locked!
+            }
+
+            // Normal Content Loading
             const chapter = excelBookData[index];
 
             let htmlContent = `
@@ -496,7 +396,6 @@
                 htmlContent += `<h3>${topic.heading}</h3>`;
                 htmlContent += `<p>${topic.text}</p>`;
                 
-                // NEW: Logic to render the shortcut beautifully if it exists in the data
                 if(topic.shortcut) {
                     htmlContent += `
                     <div class="shortcut-box">
@@ -519,28 +418,46 @@
             }
         }
 
-        // --- 1. NEW ZOOMABLE LIGHTBOX LOGIC ---
+        function checkPassword(index) {
+            const input = document.getElementById('unlockPass').value;
+            if (input === "PGDCA") {
+                isAdvancedUnlocked = true; 
+                
+                // Instantly turn all 🔒 into 📗 in the sidebar
+                document.querySelectorAll('.note-nav-btn').forEach((btn, i) => {
+                    if (i >= 9) {
+                        btn.innerHTML = btn.innerHTML.replace('🔒', '📗');
+                    }
+                });
+                
+                const btn = document.querySelectorAll('.note-nav-btn')[index];
+                loadContent(index, btn); 
+            } else {
+                document.getElementById('wrong-pass-msg').style.display = 'block'; 
+            }
+        }
+
+        // Zoomable Lightbox Logic
         function openLightbox(src) {
             const img = document.getElementById('lightbox-img');
             img.src = src;
-            img.classList.remove('zoomed'); // Always start zoomed out
-            document.getElementById('lightbox').style.display = 'block'; // Changed to block to allow scrolling
+            img.classList.remove('zoomed');
+            document.getElementById('lightbox').style.display = 'block'; 
         }
 
         function closeLightbox(e) {
-            // Only close if the student clicks the dark background
             if (e.target.id === 'lightbox') {
                 document.getElementById('lightbox').style.display = 'none';
             }
         }
 
         function toggleZoom(e) {
-            e.stopPropagation(); // Prevents the image click from closing the window
+            e.stopPropagation(); 
             const img = e.target;
             img.classList.toggle('zoomed');
         }
 
-        // --- 2. DRAG TO SCROLL LOGIC (Remains exactly the same!) ---
+        // Drag to scroll logic
         let isDown = false, startY, scrollTop;
 
         contentDisplay.addEventListener('mousedown', (e) => {
