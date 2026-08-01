@@ -335,16 +335,10 @@ const excelBookData = [
                 text: "To stop someone from even opening the Excel file (like a private exam paper), go to 'File' > 'Info' > 'Protect Workbook' > 'Encrypt with Password'. Warning: If you forget the password, the file is locked forever! Microsoft cannot open it for you.",
                 shortcut: "Alt + F, I, P, E (Locks the file with a password)",
                 imgSrc: "images/ex-42-encrypt.jpg"
-            },
-            {
-                heading: "Macros (The Invisible Robot)",
-                text: "A Macro is an invisible robot you can train. If you paint a box blue and make it bold every single day, go to 'View' > 'Macros' > 'Record Macro'. Excel watches you do it once. The next day, you just click 'Play', and the robot does all the formatting for you in one second!",
-                shortcut: "Alt + W, M, R (Starts training the robot)",
-                imgSrc: "images/ex-43-macro.jpg"
             }
         ]
-    }
-    ,{
+    },
+    {
         id: "chapter15",
         title: "Chapter 15: The Secret Pro Tools",
         topics: [
@@ -383,6 +377,36 @@ const excelBookData = [
                 text: "To select an entire row to delete it or paint it, you don't need to carefully drag your mouse all the way across the screen. Just click any box and use these quick keyboard buttons to highlight the entire line in one blink of an eye.",
                 shortcut: "Shift + Space (Select Row) | Ctrl + Space (Select Column)",
                 imgSrc: "images/ex-48-selectall.jpg"
+            }
+        ]
+    },
+    {
+        id: "chapter17",
+        title: "Chapter 17: DCA Exclusive (Data Entry & Formatting)",
+        topics: [
+            {
+                heading: "Professional Data Entry & Tables",
+                text: "In office jobs, data entry must be fast and accurate. Use Excel 'Tables' (Insert > Table) to automatically format your data with banded rows and built-in filters. This makes managing hundreds of employee or student records effortless.",
+                shortcut: "Ctrl + T (Instantly turns your data into a smart Table)",
+                imgSrc: "images/ex-49-data-entry.jpg"
+            },
+            {
+                heading: "Advanced Formulas & Automation",
+                text: "DCA students must master dynamic formulas. Combine functions like IF, VLOOKUP, and AutoSum to create automated salary sheets or mark sheets that calculate totals, grades, and tax deductions instantly without a calculator.",
+                shortcut: "Alt + = (AutoSum) | F4 (Locks a cell reference)",
+                imgSrc: "images/ex-50-advanced-formulas.jpg"
+            },
+            {
+                heading: "Page Setup, Printing & PDF",
+                text: "Excel sheets often look terrible on paper if not set up correctly. Go to Page Layout > Print Area to select exactly what to print. Always use 'Fit to One Page' scaling before printing. Finally, save your important financial reports as a PDF (File > Export) so nobody can edit your numbers.",
+                shortcut: "Ctrl + P (Opens Print Preview to check margins)",
+                imgSrc: "images/ex-51-print-pdf.jpg"
+            },
+            {
+                heading: "DCA Practice Assignments",
+                text: "Your practical tasks: 1. Create a monthly student attendance register using Tables and Conditional Formatting (Red for Absent). 2. Build a full Mark Sheet using the IF formula to automatically calculate Pass/Fail grades. 3. Set the Print Area for the Mark Sheet and save it as a PDF.",
+                shortcut: "Save all assignments in your personal DCA folder!",
+                imgSrc: "images/ex-52-assignments.jpg"
             }
         ]
     }
