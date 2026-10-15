@@ -279,7 +279,21 @@
         let isAdvancedUnlocked = false; // PGDCA
         let isDcaUnlocked = false;      // DCA
 
+        // Detect if running inside Excellent Institute Mobile App
+        function isMobileApp() {
+            return !!(window.isExcellentMobileApp || window.location.hash.includes('admin') || window.location.search.includes('target=') || window.location.search.includes('chapter='));
+        }
+
+        // Universal Data Hook for Flutter Offline PDF Builder
+        function getCourseData() {
+            return typeof excelBookData !== 'undefined' ? excelBookData : null;
+        }
+
         function initApp() {
+            if (isMobileApp()) {
+                isAdvancedUnlocked = true;
+                isDcaUnlocked = true;
+            }
             if (typeof excelBookData === 'undefined') {
                 contentDisplay.innerHTML = `<h2 style="color:red; text-align:center; padding:50px;">Awaiting Data File...</h2>`;
                 return;
